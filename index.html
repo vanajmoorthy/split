@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Split</title>
+    <style>
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --surface-raised: #242424;
+        --border: #2e2e2e;
+        --text: #e8e4df;
+        --text-muted: #8a8580;
+        --accent-a: #e8a44a;
+        --accent-b: #5ba3c9;
+        --radius: 10px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+      .container {
+        width: 100%;
+        max-width: 480px;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 4px;
+      }
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 28px;
+      }
+      label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+      }
+      .total-input {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+        font-size: 1.3rem;
+        color: var(--text);
+        outline: none;
+        margin-bottom: 24px;
+      }
+      .total-input:focus {
+        border-color: var(--accent-a);
+      }
+      .section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .section.a .section-title {
+        color: var(--accent-a);
+      }
+      .section.b .section-title {
+        color: var(--accent-b);
+      }
+      .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .input-row input {
+        flex: 1;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 0.95rem;
+        color: var(--text);
+        outline: none;
+      }
+      .input-row input:focus {
+        border-color: var(--text-muted);
+      }
+      .btn {
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: var(--border);
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--surface-raised);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 3px 8px 3px 10px;
+        font-size: 0.8rem;
+      }
+      .tag button {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 0.65rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tag button:hover {
+        background: #c95b5b;
+        color: #fff;
+      }
+      .expr {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        min-height: 20px;
+      }
+      .expr .val {
+        color: var(--text);
+      }
+      .expr .sum {
+        font-weight: 600;
+      }
+      .section.a .expr .sum {
+        color: var(--accent-a);
+      }
+      .section.b .expr .sum {
+        color: var(--accent-b);
+      }
+      .result {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-top: 8px;
+      }
+      .result-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 0.95rem;
+      }
+      .row + .row {
+        border-top: 1px solid var(--border);
+      }
+      .row .lbl {
+        color: var(--text-muted);
+      }
+      .row.a .amt {
+        color: var(--accent-a);
+        font-weight: 600;
+      }
+      .row.b .amt {
+        color: var(--accent-b);
+        font-weight: 600;
+      }
+      .note {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .hidden {
+        display: none;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Split</h1>
+      <p class="subtitle">Split a grocery bill between two people.</p>
+
+      <label for="total">Bill Total</label>
+      <input
+        class="total-input"
+        type="number"
+        id="total"
+        placeholder="0.00"
+        step="0.01"
+      />
+
+      <div class="section a">
+        <div class="section-title">Person A</div>
+        <div class="input-row">
+          <input
+            type="number"
+            id="inputA"
+            placeholder="Item amount"
+            step="0.01"
+          />
+          <button class="btn" id="addA">Add</button>
+        </div>
+        <div class="tags" id="tagsA"></div>
+        <div class="expr" id="exprA"></div>
+      </div>
+
+      <div class="section b">
+        <div class="section-title">Person B</div>
+        <div class="input-row">
+          <input
+            type="number"
+            id="inputB"
+            placeholder="Item amount"
+            step="0.01"
+          />
+          <button class="btn" id="addB">Add</button>
+        </div>
+        <div class="tags" id="tagsB"></div>
+        <div class="expr" id="exprB"></div>
+      </div>
+
+      <div class="result hidden" id="result">
+        <div class="result-title">Totals</div>
+        <div class="row a">
+          <span class="lbl">Person A</span><span class="amt" id="owesA"></span>
+        </div>
+        <div class="row b">
+          <span class="lbl">Person B</span><span class="amt" id="owesB"></span>
+        </div>
+        <div class="note" id="note"></div>
+      </div>
+    </div>
+
+    <script>
+      let itemsA = [];
+      let itemsB = [];
+
+      function sum(arr) {
+        return arr.reduce((total, n) => total + n, 0);
+      }
+
+      function fmt(n) {
+        return "£" + n.toFixed(2);
+      }
+
+      function addItem(person) {
+        let input, items;
+
+        if (person === "a") {
+          input = document.getElementById("inputA");
+          items = itemsA;
+        } else {
+          input = document.getElementById("inputB");
+          items = itemsB;
+        }
+
+        const value = parseFloat(input.value);
+        if (isNaN(value) || value <= 0) return;
+
+        items.push(value);
+        input.value = "";
+        input.focus();
+        render();
+      }
+
+      function removeItem(person, index) {
+        if (person === "a") {
+          itemsA.splice(index, 1);
+        } else {
+          itemsB.splice(index, 1);
+        }
+        render();
+      }
+
+      function renderTags(person) {
+        const items = person === "a" ? itemsA : itemsB;
+        const container = document.getElementById(
+          "tags" + person.toUpperCase(),
+        );
+        container.textContent = "";
+
+        for (let i = 0; i < items.length; i++) {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+
+          const label = document.createElement("span");
+          label.textContent = fmt(items[i]);
+          tag.appendChild(label);
+
+          const removeBtn = document.createElement("button");
+          removeBtn.textContent = "\u2715";
+          removeBtn.addEventListener("click", function () {
+            removeItem(person, i);
+          });
+          tag.appendChild(removeBtn);
+
+          container.appendChild(tag);
+        }
+      }
+
+      function renderExpression(person) {
+        const items = person === "a" ? itemsA : itemsB;
+        const container = document.getElementById(
+          "expr" + person.toUpperCase(),
+        );
+        container.textContent = "";
+
+        if (items.length === 0) return;
+
+        for (let i = 0; i < items.length; i++) {
+          if (i > 0) {
+            container.appendChild(document.createTextNode(" + "));
+          }
+          const valueSpan = document.createElement("span");
+          valueSpan.className = "val";
+          valueSpan.textContent = fmt(items[i]);
+          container.appendChild(valueSpan);
+        }
+
+        container.appendChild(document.createTextNode(" = "));
+
+        const totalSpan = document.createElement("span");
+        totalSpan.className = "sum";
+        totalSpan.textContent = fmt(sum(items));
+        container.appendChild(totalSpan);
+      }
+
+      function renderResult() {
+        const billTotal = parseFloat(document.getElementById("total").value);
+        const totalA = sum(itemsA);
+        const totalB = sum(itemsB);
+        const resultDiv = document.getElementById("result");
+
+        if (
+          isNaN(billTotal) ||
+          billTotal <= 0 ||
+          (itemsA.length === 0 && itemsB.length === 0)
+        ) {
+          resultDiv.classList.add("hidden");
+          return;
+        }
+
+        resultDiv.classList.remove("hidden");
+
+        const remainder = billTotal - totalA - totalB;
+        const halfRemainder = remainder / 2;
+
+        document.getElementById("owesA").textContent = fmt(
+          totalA + halfRemainder,
+        );
+        document.getElementById("owesB").textContent = fmt(
+          totalB + halfRemainder,
+        );
+
+        const note = document.getElementById("note");
+        if (remainder > 0.01) {
+          note.textContent = "Remaining " + fmt(remainder) + " split evenly.";
+        } else if (remainder < -0.01) {
+          note.textContent =
+            "\u26A0 Items exceed total by " + fmt(Math.abs(remainder));
+        } else {
+          note.textContent = "Items match the total exactly.";
+        }
+      }
+
+      function render() {
+        renderTags("a");
+        renderTags("b");
+        renderExpression("a");
+        renderExpression("b");
+        renderResult();
+      }
+
+      document.getElementById("addA").addEventListener("click", function () {
+        addItem("a");
+      });
+
+      document.getElementById("addB").addEventListener("click", function () {
+        addItem("b");
+      });
+
+      document.getElementById("total").addEventListener("input", render);
+
+      document
+        .getElementById("inputA")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addItem("a");
+          }
+        });
+
+      document
+        .getElementById("inputB")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addItem("b");
+          }
+        });
+    </script>
+  </body>
+</html>
